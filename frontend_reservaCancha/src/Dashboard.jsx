@@ -44,8 +44,8 @@ export function Dashboard() {
             ReservaCancha
           </Navbar.Brand>
           <Nav className="ms-auto flex-nowrap">
-            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/crear-cancha')}>Crear Cancha</Nav.Link>
-            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/ver-canchas')}>Ver Canchas</Nav.Link>
+            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/cancha/create')}>Crear Cancha</Nav.Link>
+            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/canchas')}>Ver Canchas</Nav.Link>
             <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reservar')}>Reservar</Nav.Link>
             <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/ver-reservas')}>Reservas</Nav.Link>
             <Button
