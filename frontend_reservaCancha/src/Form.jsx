@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export function FormLogin(){
      const [inputs, setInputs] = useState({
@@ -79,12 +80,9 @@ export function FormLogin(){
 
 
     <div className="mb-3 form-floating">
-    <input type="text" name="password" value={inputs.password} onChange={handleChange} className="form-control" id="password" placeholder="Contraseña" required />
+    <input type="password" name="password" value={inputs.password} onChange={handleChange} className="form-control" id="password" placeholder="Contraseña" required />
     <label htmlFor="password">Contraseña</label>
     </div>
-
-
-    
 
 
     {error && (
@@ -110,7 +108,10 @@ export function FormLogin(){
     </div>
 
 
-    <p className="text-center small mb-0">¿No tienes cuenta? <a href="#">Regístrate</a></p>
+    <p className="text-center small mb-0">
+        ¿No tienes cuenta? <Link to="/auth/register">Regístrate</Link>
+    </p>
+
     </form>
     </div>
     </div>

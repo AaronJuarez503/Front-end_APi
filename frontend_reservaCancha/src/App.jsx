@@ -1,18 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FormLogin } from './Form';
+import { FormRegister } from './FormR';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <FormLogin></FormLogin>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/auth/login" />} />
+        <Route path="/auth/login" element={<FormLogin />} />
+        <Route path="/auth/register" element={<FormRegister />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
