@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export function FormLogin(){
      const [inputs, setInputs] = useState({
@@ -10,6 +11,7 @@ export function FormLogin(){
      const [isLoading, setIsLoading] = useState(false);
      const [error, setError] = useState(null);
      const [successMessage, setSuccessMessage] = useState(null);
+     const navigate = useNavigate();
 
      const handleChange = (e) => {
         const name = e.target.name;
@@ -49,6 +51,7 @@ export function FormLogin(){
                 username: '',
                 password: ''
             });
+            navigate('/dashboard');
 
         } catch (error) {
             console.error('Error completo:', error);
