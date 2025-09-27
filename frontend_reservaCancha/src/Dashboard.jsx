@@ -46,8 +46,8 @@ export function Dashboard() {
           <Nav className="ms-auto flex-nowrap">
             <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/cancha/create')}>Crear Cancha</Nav.Link>
             <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/canchas')}>Ver Canchas</Nav.Link>
-            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reservar')}>Reservar</Nav.Link>
-            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/ver-reservas')}>Reservas</Nav.Link>
+            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reserva/create')}>Reservar</Nav.Link>
+            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reservas')}>Reservas</Nav.Link>
             <Button
               variant="danger"
               onClick={handleLogout}

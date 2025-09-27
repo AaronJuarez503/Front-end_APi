@@ -30,21 +30,78 @@ export function ViewCanchas() {
     fetchCanchas();
   }, []);
 
-  if (isLoading) return <div className="text-center mt-5">Cargando canchas...</div>;
+  if (isLoading)
+    return <div className="text-center mt-5">Cargando canchas...</div>;
   if (error) return <div className="alert alert-danger mt-5">{error}</div>;
 
-  const diasSemana = ["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
+  const diasSemana = [
+    "lunes",
+    "martes",
+    "miercoles",
+    "jueves",
+    "viernes",
+    "sabado",
+    "domingo",
+  ];
 
   return (
-    <div className="container mt-5">
-      <h3 className="mb-4 text-center">Lista de Canchas</h3>
-      <div className="row">
-        {canchas.length === 0 ? (
-          <div className="col-12 text-center">No hay canchas registradas.</div>
-        ) : (
-          canchas.map((cancha) => (
-            <div className="col-md-4 mb-4" key={cancha.id}>
-              <div className="card h-100 shadow">
+    <>
+      <style>{`
+        html, body, #root {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          background-color: #f8f9fa;
+        }
+        .full-screen-container {
+          min-height: 100vh;
+          height: auto;
+          padding: 2rem 1rem 1rem 1rem;
+          box-sizing: border-box;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          width: 100vw;
+          background-color: #f8f9fa;
+        }
+        .cancha-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: 2rem;
+          justify-content: center;
+          justify-items: center;
+          width: 100%;
+          max-width: 1200px;
+        }
+        .card {
+          width: 320px;
+        }
+        .btn-dashboard {
+          align-self: center;
+          margin-bottom: 1.5rem;
+        }
+      `}</style>
+
+      <div className="full-screen-container">
+        <button
+          type="button"
+          className="btn btn-secondary btn-dashboard"
+          onClick={() => navigate("/dashboard")}
+        >
+          Regresar al Dashboard
+        </button>
+
+        <h3 className="mb-4 text-center">Lista de Canchas</h3>
+
+        <div className="cancha-grid">
+          {canchas.length === 0 ? (
+            <div className="text-center col-12">No hay canchas registradas.</div>
+          ) : (
+            canchas.map((cancha) => (
+              <div key={cancha.id} className="card h-100 shadow">
                 <img
                   src={cancha.imagen}
                   className="card-img-top"
@@ -63,17 +120,23 @@ export function ViewCanchas() {
                     <strong>Disponibilidad:</strong>
                     <ul className="list-group list-group-flush mt-2">
                       {diasSemana.map((dia) => {
-                        const disponibilidad = cancha.disponibilidad_horarios?.[dia];
+                        const disponibilidad =
+                          cancha.disponibilidad_horarios?.[dia];
                         if (!disponibilidad || !disponibilidad.disponible) {
                           return (
-                            <li key={dia} className="list-group-item py-1 text-muted">
-                              {dia.charAt(0).toUpperCase() + dia.slice(1)}: No disponible
+                            <li
+                              key={dia}
+                              className="list-group-item py-1 text-muted"
+                            >
+                              {dia.charAt(0).toUpperCase() + dia.slice(1)}: No
+                              disponible
                             </li>
                           );
                         }
                         return (
                           <li key={dia} className="list-group-item py-1">
-                            {dia.charAt(0).toUpperCase() + dia.slice(1)}: {disponibilidad.inicio} - {disponibilidad.fin}
+                            {dia.charAt(0).toUpperCase() + dia.slice(1)}:{" "}
+                            {disponibilidad.inicio} - {disponibilidad.fin}
                           </li>
                         );
                       })}
@@ -97,8 +160,7 @@ export function ViewCanchas() {
                             { headers: { Authorization: `Bearer ${token}` } }
                           );
                           alert("Cancha eliminada correctamente");
-                          // Opcional: actualizar la lista local
-                          setCanchas(canchas.filter(c => c.id !== cancha.id));
+                          setCanchas(canchas.filter((c) => c.id !== cancha.id));
                         } catch (err) {
                           console.error(err);
                           alert("Error al eliminar la cancha");
@@ -110,10 +172,10 @@ export function ViewCanchas() {
                   </button>
                 </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

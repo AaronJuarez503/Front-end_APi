@@ -6,6 +6,8 @@ import { Dashboard } from './Dashboard';
 import { FormCancha } from './CreateCancha';
 import { ViewCanchas } from './VistaCancha';
 import { FormEditCancha } from './FormEditCancha';
+import { FormReserva } from './FormReserva';
+import { ViewReservas } from "./ViewReservas";
 import { ProtectedRoute } from './ProtectedRoute';
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/dashboard"element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/canchas" element={<ProtectedRoute><ViewCanchas /></ProtectedRoute>} />
          <Route path="/cancha/edit/:id" element={<ProtectedRoute><FormEditCancha /></ProtectedRoute>} />
+         <Route path="/reserva/create" element={<ProtectedRoute><FormReserva /></ProtectedRoute>} />
+         <Route path="/reservas" element={<ProtectedRoute><ViewReservas /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

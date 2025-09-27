@@ -27,8 +27,8 @@ export function FormLogin(){
         setSuccessMessage(null);
         
         console.log('Enviando datos:', {
-            username: inputs.username,
-            password: inputs.password
+           username: inputs.username,
+           password: inputs.password
         });
 
         try {
@@ -66,58 +66,119 @@ export function FormLogin(){
      }
 
     return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
-    <div className="card shadow p-4" style={{ maxWidth: "420px", width: "100%", borderRadius: "1rem" }}>
-    <div className="card-body">
-    <div className="text-center mb-4">
-    <h3 className="fw-bold">Mi App</h3>
-    <p className="text-muted mb-0">Bienvenido — inicia sesión para continuar</p>
-    </div>
+    <>
+      <style>{`
+        html, body, #root {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          background-color: #f8f9fa;
+        }
+        .full-screen-form-container {
+          min-height: 100vh;
+          height: auto;
+          padding: 2rem 1rem 1rem 1rem;
+          box-sizing: border-box;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          width: 100vw;
+        }
+        .form-card {
+          width: 100%;
+          max-width: 420px;
+          border-radius: 1rem;
+          padding: 2rem 2.5rem;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          background-color: white;
+        }
+        .form-card h3 {
+          font-weight: 700;
+          text-align: center;
+          margin-bottom: 1rem;
+        }
+        .btn-fullwidth {
+          width: 100%;
+        }
+        .alert {
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+        }
+        .text-muted {
+          margin-bottom: 1.5rem;
+          text-align: center;
+        }
+      `}</style>
 
+      <div className="full-screen-form-container">
+        <div className="card form-card shadow">
+          <div className="card-body">
+            <div className="text-center mb-4">
+              <h3 className="fw-bold">Mi App</h3>
+              <p className="text-muted mb-0">Bienvenido — inicia sesión para continuar</p>
+            </div>
 
-    <form onSubmit={handleSubmit}>
-    <div className="mb-3 form-floating">
-    <input type="text" name="username" value={inputs.username} onChange={handleChange} className="form-control" id="username" placeholder="nombre@juanito123" required />
-    <label htmlFor="username">Nombre de Usuario</label>
-    </div>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3 form-floating">
+                <input
+                  type="text"
+                  name="username"
+                  value={inputs.username}
+                  onChange={handleChange}
+                  className="form-control"
+                  id="username"
+                  placeholder="nombre@juanito123"
+                  required
+                />
+                <label htmlFor="username">Nombre de Usuario</label>
+              </div>
 
+              <div className="mb-3 form-floating">
+                <input
+                  type="password"
+                  name="password"
+                  value={inputs.password}
+                  onChange={handleChange}
+                  className="form-control"
+                  id="password"
+                  placeholder="Contraseña"
+                  required
+                />
+                <label htmlFor="password">Contraseña</label>
+              </div>
 
-    <div className="mb-3 form-floating">
-    <input type="password" name="password" value={inputs.password} onChange={handleChange} className="form-control" id="password" placeholder="Contraseña" required />
-    <label htmlFor="password">Contraseña</label>
-    </div>
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              )}
+              
+              {successMessage && (
+                <div className="alert alert-success" role="alert">
+                  {successMessage}
+                </div>
+              )}
 
+              <div className="d-grid mb-3">
+                <button
+                  className="btn btn-primary btn-fullwidth"
+                  type="submit"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+                </button>
+              </div>
 
-    {error && (
-        <div className="alert alert-danger" role="alert">
-            {error}
+              <p className="text-center small mb-0">
+                ¿No tienes cuenta? <Link to="/auth/register">Regístrate</Link>
+              </p>
+            </form>
+          </div>
         </div>
-    )}
-    
-    {successMessage && (
-        <div className="alert alert-success" role="alert">
-            {successMessage}
-        </div>
-    )}
-
-    <div className="d-grid mb-3">
-        <button 
-            className="btn btn-primary" 
-            type="submit" 
-            disabled={isLoading}
-        >
-            {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
-        </button>
-    </div>
-
-
-    <p className="text-center small mb-0">
-        ¿No tienes cuenta? <Link to="/auth/register">Regístrate</Link>
-    </p>
-
-    </form>
-    </div>
-    </div>
-    </div>
+      </div>
+    </>
     );
 }
