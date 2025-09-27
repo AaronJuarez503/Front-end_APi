@@ -11,16 +11,21 @@ export function ViewReservas() {
 
   useEffect(() => {
     const fetchReservas = async () => {
+      setIsLoading(true);
       const token = localStorage.getItem("token");
+      const rol = localStorage.getItem("rol"); // Asumiendo que rol está guardado aquí
+
+      let url = "https://reservas-cancha-1.onrender.com/api/v1/reserva";
+      if (rol === "CLIENTE") {
+        url = "https://reservas-cancha-1.onrender.com/api/v1/reserva/cliente";
+      }
+
       try {
-        const response = await axios.get(
-          "https://reservas-cancha-1.onrender.com/api/v1/reserva/cliente",
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
-        );
+        const response = await axios.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log("Reservas obtenidas:", response.data);
-        setReservas(response.data);  
+        setReservas(response.data);
       } catch (err) {
         console.error("Error al cargar reservas:", err);
         setError("Error al cargar las reservas.");
@@ -43,42 +48,42 @@ export function ViewReservas() {
   return (
     <>
       <style>{`
-        html, body, #root {
-          height: 100%;
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          overflow: hidden;
-        }
-        .full-screen-container {
-          height: 100vh;
-          width: 100vw;
-          display: flex;
-          flex-direction: column;
-          padding: 1rem 2rem;
-          box-sizing: border-box;
-          overflow-y: auto;
-          align-items: center;
-        }
-        .reserva-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-          gap: 2rem;
-          justify-content: center;
-          justify-items: center;
-        }
-        .card {
-          width: 350px !important;
-          height: 300px !important;
-          overflow: auto;
-        }
-        .button-container {
-          display: flex;
-          justify-content: center;
-          margin-bottom: 1rem;
-          width: 100%;
-        }
-      `}</style>
+      html, body, #root {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow: hidden;
+      }
+      .full-screen-container {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 2rem;
+        box-sizing: border-box;
+        overflow-y: auto;
+        align-items: center;
+      }
+      .reserva-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        justify-content: center;
+        justify-items: center;
+      }
+      .card {
+        width: 350px !important;
+        height: 300px !important;
+        overflow: auto;
+      }
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+        width: 100%;
+      }
+    `}</style>
 
       <div className="full-screen-container">
         <div className="button-container">

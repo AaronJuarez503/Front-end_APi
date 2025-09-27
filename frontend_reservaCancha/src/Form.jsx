@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 
 export function FormLogin(){
      const [inputs, setInputs] = useState({
@@ -32,26 +33,34 @@ export function FormLogin(){
         });
 
         try {
-            const response = await axios({
-                method: 'post',
-                url: 'https://reservas-cancha-1.onrender.com/auth/login',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    username: inputs.username,
-                    password: inputs.password
-                }
-            });
+  const response = await axios({
+    method: 'post',
+    url: 'https://reservas-cancha-1.onrender.com/auth/login',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      username: inputs.username,
+      password: inputs.password
+    }
+  });
 
-            console.log('Respuesta del servidor:', response.data);
-            localStorage.setItem('token', response.data.access_token);
-            setSuccessMessage('¡Inicio de sesión exitoso!');
-            setInputs({
-                username: '',
-                password: ''
-            });
-            navigate('/dashboard');
+  console.log('Respuesta del servidor:', response.data);
+  localStorage.setItem('token', response.data.access_token);
+
+  // Decodificamos token para extraer el rol
+  const decodedToken = jwtDecode(response.data.access_token);
+  const rolUsuario = decodedToken.role || decodedToken.rol || "CLIENTE";
+
+  // Guardamos rol en localStorage
+  localStorage.setItem("rol", rolUsuario);
+
+  setSuccessMessage('¡Inicio de sesión exitoso!');
+  setInputs({
+    username: '',
+    password: ''
+  });
+  navigate('/dashboard');
 
         } catch (error) {
             console.error('Error completo:', error);
