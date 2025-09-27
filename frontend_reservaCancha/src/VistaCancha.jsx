@@ -12,13 +12,23 @@ export function ViewCanchas() {
   useEffect(() => {
     const fetchCanchas = async () => {
       const token = localStorage.getItem("token");
+      const rol = localStorage.getItem("rol");
+      const isCliente = rol === "CLIENTE";
+
+      let url = "https://reservas-cancha-1.onrender.com/api/v1/cancha?page=1&pageSize=10";
+      if (isCliente) {
+        url = "https://reservas-cancha-1.onrender.com/api/v1/cancha/cliente";
+      }
+
       try {
-        const response = await axios.get(
-          "https://reservas-cancha-1.onrender.com/api/v1/cancha?page=1&pageSize=10",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await axios.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log("Canchas obtenidas:", response);
-        setCanchas(response.data.data);
+
+        const data = response.data;
+        const canchasObtenidas = Array.isArray(data) ? data : data.data;
+        setCanchas(canchasObtenidas);
       } catch (err) {
         console.error(err);
         setError("Error al cargar las canchas.");
@@ -29,6 +39,9 @@ export function ViewCanchas() {
 
     fetchCanchas();
   }, []);
+
+  const rol = localStorage.getItem("rol");
+  const isAdmin = rol === "ADMIN";
 
   if (isLoading)
     return <div className="text-center mt-5">Cargando canchas...</div>;
@@ -143,33 +156,37 @@ export function ViewCanchas() {
                     </ul>
                   </div>
 
-                  <button
-                    className="btn btn-primary w-100 mt-3"
-                    onClick={() => navigate(`/cancha/edit/${cancha.id}`)}
-                  >
-                    Editar Cancha
-                  </button>
-                  <button
-                    className="btn btn-danger w-100 mt-2"
-                    onClick={async () => {
-                      const token = localStorage.getItem("token");
-                      if (window.confirm("¿Seguro que deseas eliminar esta cancha?")) {
-                        try {
-                          await axios.delete(
-                            `https://reservas-cancha-1.onrender.com/api/v1/cancha/${cancha.id}`,
-                            { headers: { Authorization: `Bearer ${token}` } }
-                          );
-                          alert("Cancha eliminada correctamente");
-                          setCanchas(canchas.filter((c) => c.id !== cancha.id));
-                        } catch (err) {
-                          console.error(err);
-                          alert("Error al eliminar la cancha");
-                        }
-                      }
-                    }}
-                  >
-                    Eliminar Cancha
-                  </button>
+                  {isAdmin && (
+                    <>
+                      <button
+                        className="btn btn-primary w-100 mt-3"
+                        onClick={() => navigate(`/cancha/edit/${cancha.id}`)}
+                      >
+                        Editar Cancha
+                      </button>
+                      <button
+                        className="btn btn-danger w-100 mt-2"
+                        onClick={async () => {
+                          const token = localStorage.getItem("token");
+                          if (window.confirm("¿Seguro que deseas eliminar esta cancha?")) {
+                            try {
+                              await axios.delete(
+                                `https://reservas-cancha-1.onrender.com/api/v1/cancha/${cancha.id}`,
+                                { headers: { Authorization: `Bearer ${token}` } }
+                              );
+                              alert("Cancha eliminada correctamente");
+                              setCanchas(canchas.filter((c) => c.id !== cancha.id));
+                            } catch (err) {
+                              console.error(err);
+                              alert("Error al eliminar la cancha");
+                            }
+                          }
+                        }}
+                      >
+                        Eliminar Cancha
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             ))

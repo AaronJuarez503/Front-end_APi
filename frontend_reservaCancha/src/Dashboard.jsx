@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
   const navigate = useNavigate();
+  const [rol, setRol] = useState(null);
+
+  useEffect(() => {
+    setRol(localStorage.getItem('rol'));
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('rol');
     navigate('/auth/login');
   };
 
@@ -20,7 +26,6 @@ export function Dashboard() {
       margin: 0,
       padding: 0
     }}>
-      {/* Barra de navegación estilizada */}
       <Navbar
         expand="lg"
         style={{
@@ -44,10 +49,20 @@ export function Dashboard() {
             ReservaCancha
           </Navbar.Brand>
           <Nav className="ms-auto flex-nowrap">
-            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/cancha/create')}>Crear Cancha</Nav.Link>
-            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/canchas')}>Ver Canchas</Nav.Link>
-            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reserva/create')}>Reservar</Nav.Link>
-            <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reservas')}>Reservas</Nav.Link>
+            {rol === 'ADMIN' && (
+              <>
+                <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/cancha/create')}>Crear Cancha</Nav.Link>
+                <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/canchas')}>Ver Canchas</Nav.Link>
+                <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reservas')}>Reservas</Nav.Link>
+              </>
+            )}
+            {rol === 'CLIENTE' && (
+              <>
+                <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/canchas')}>Ver Canchas</Nav.Link>
+                <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reserva/create')}>Reservar</Nav.Link>
+                <Nav.Link style={{ color: '#fff' }} onClick={() => navigate('/reservas')}>Reservas</Nav.Link>
+              </>
+            )}
             <Button
               variant="danger"
               onClick={handleLogout}
